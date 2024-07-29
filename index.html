@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Keystroke Recorder | Record Your Keystrokes Easily</title>
+	<meta name="description" content="A simple web page to record and display your keystrokes.">
+	<meta name="keywords" content="keystroke recorder, key logger, record keystrokes, javascript">
+	<meta name="author" content="Your Name">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+			background: linear-gradient(135deg, #f06, #48f);
+			color: #333;
+		}
+
+		#container {
+			background: white;
+			padding: 20px;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+			text-align: center;
+			max-width: 400px;
+			width: 100%;
+		}
+
+		#keyDisplay {
+			margin-top: 20px;
+			padding: 10px;
+			background: #f9f9f9;
+			border-radius: 4px;
+			min-height: 100px;
+			max-height: 300px;
+			overflow-y: auto;
+			border: 1px solid #ddd;
+		}
+
+		button {
+			margin-top: 20px;
+			padding: 10px 20px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		button:hover {
+			background-color: #45a049;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<h1>Keystroke Recorder</h1>
+		<p>Type anywhere on the page to record keystrokes.</p>
+		<div id="keyDisplay" aria-live="polite"></div>
+		<button onclick="clearKeystrokes()">Clear</button>
+	</div>
+
+	<script>
+		let keystrokes = []
+		let keyDisplay = document.getElementById('keyDisplay')
+
+		function recordKeystroke(event) {
+			let timestamp = new Date().getTime()
+			let keystroke = {
+				key: event.key,
+				type: event.type,
+				timestamp: timestamp
+			}
+			keystrokes.push(keystroke)
+			updateDisplay(keystroke)
+		}
+
+		function updateDisplay(keystroke) {
+			let keystrokeElement = document.createElement('div')
+			keystrokeElement.textContent = `${keystroke.type}: ${keystroke.key} (${new Date(keystroke.timestamp).toLocaleTimeString()})`
+			keyDisplay.appendChild(keystrokeElement)
+			keyDisplay.scrollTop = keyDisplay.scrollHeight
+		}
+
+		function clearKeystrokes() {
+			keystrokes = []
+			keyDisplay.innerHTML = ''
+		}
+
+		document.addEventListener('keydown', recordKeystroke)
+		document.addEventListener('keyup', recordKeystroke);
+	</script>
+</body>
+
+</html>
